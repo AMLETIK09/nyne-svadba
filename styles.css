@@ -1,0 +1,588 @@
+/* --- ШРИФТЫ И БАЗОВЫЕ СТИЛИ --- */
+@font-face {
+  font-family: 'Rupster Script Free';
+  src: url('https://dl.dropboxusercontent.com/s/6b3q5w6z1z5d9j0/RupsterScriptFree.woff2') format('woff2'),
+       url('https://dl.dropboxusercontent.com/s/2s2h2i5p4d4s2k1/RupsterScriptFree.woff') format('woff');
+  font-weight: normal;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Patrician';
+  src: url('https://fonts.cdnfonts.com/s/55860/Patrician-Regular.woff') format('woff');
+  font-weight: normal;
+  font-style: normal;
+  font-display: swap;
+}
+
+*, *::before, *::after {
+  box-sizing: border-box;
+}
+
+body {
+  color: #000000;
+  font-family: 'Playfair Display', serif;
+  font-weight: 400;
+  font-size: 1.1rem;
+  line-height: 1.6;
+  margin: 0;
+  padding: 0;
+  text-align: center;
+  overflow-x: hidden;
+  position: relative;
+  background-color: #fdf6f7; /* Добавляем фоновый цвет на случай проблем с видео */
+}
+
+/* Видеофон */
+.video-background {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  z-index: -2;
+}
+
+.video-background video {
+  min-width: 100%;
+  min-height: 100%;
+  width: auto;
+  height: auto;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  object-fit: cover;
+}
+
+/* Затемнение видео для лучшей читаемости текста */
+.video-background::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(255, 255, 255, 0.7); /* Светлое затемнение для светлого текста */
+}
+
+.container {
+  max-width: 900px;
+  margin: 0 auto;
+  padding: 20px;
+  position: relative;
+  z-index: 1;
+}
+
+/* --- АНИМАЦИЯ ПОЯВЛЕНИЯ БЛОКОВ --- */
+.fade-in-up {
+  opacity: 0;
+  transform: translateY(50px);
+  transition: opacity 0.8s ease-out, transform 0.8s ease-out;
+}
+
+.fade-in-up.is-visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+
+/* --- ЗАГОЛОВКИ И ПРИВЕТСТВИЕ --- */
+.header {
+  font-family: 'Rupster Script Free', cursive;
+  font-size: 3.5rem;
+  color: #000000;
+  margin: 20px 0 10px;
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  line-height: 1.2;
+}
+
+#greeting {
+  font-size: 2.8rem;
+  margin-bottom: 20px;
+}
+
+
+/* --- ФОТО МОЛОДОЖЕНОВ --- */
+.photos {
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  flex-wrap: wrap;
+  gap: 30px;
+  margin: 40px 0;
+}
+
+.photo-card {
+  flex: 1 1 300px;
+  max-width: 350px;
+  text-align: center;
+  position: relative; /* Основа для позиционирования эффекта */
+  overflow: hidden; /* Скрываем блик, когда он за пределами карточки */
+  border-radius: 10px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  transition: box-shadow 0.4s ease; /* Плавная тень */
+}
+
+.photo-card:hover {
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+}
+
+.photo-card img {
+  display: block;
+  width: 100%;
+  height: 350px;
+  object-fit: cover;
+  
+  /* Плавный зум при наведении */
+  transition: transform 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+}
+
+/* При наведении курсора на карточку, фото плавно увеличивается */
+.photo-card:hover img {
+  transform: scale(1.1);
+}
+
+/* Создаем псевдо-элемент, который будет нашим СВЕТОВЫМ БЛИКОМ */
+.photo-card::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 50%; /* Блик не на всю ширину, а как полоса света */
+  height: 100%;
+  
+  /* Создаем сам блик с помощью градиента */
+  background: linear-gradient(
+    to right, 
+    rgba(255, 255, 255, 0) 0%, 
+    rgba(255, 255, 255, 0.2) 50%, 
+    rgba(255, 255, 255, 0) 100%
+  );
+
+  /* Изначально блик находится далеко слева, за пределами фото */
+  transform: skewX(-25deg) translateX(-250%);
+  
+  /* Плавность движения блика */
+  transition: transform 1.2s cubic-bezier(0.19, 1, 0.22, 1);
+}
+
+/* Когда мы наводим курсор на карточку... */
+.photo-card:hover::after {
+  /* ...блик плавно перемещается вправо, проходя через все фото */
+  transform: skewX(-25deg) translateX(250%);
+}
+
+/* Имена остаются на фото, как и в прошлый раз */
+.photo-card .groom-name,
+.photo-card .bride-name {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  padding: 20px;
+  margin: 0;
+  font-family: 'Rupster Script Free', cursive;
+  font-size: 2.2rem;
+  color: #ffffff;
+  background: linear-gradient(to top, rgba(0,0,0,0.7), transparent);
+  text-shadow: 1px 1px 3px rgba(0,0,0,0.5);
+  z-index: 2; /* Убедимся, что имя поверх блика */
+}
+
+/* --- ТАЙМЕР --- */
+.countdown-clean {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 15px;
+  margin: 40px auto;
+}
+.countdown-clean .unit {
+  background: #fdf6f7;
+  border: 1px solid #f2e4e6;
+  border-radius: 10px;
+  padding: 15px;
+  min-width: 80px;
+  box-shadow: 0 4px 8px rgba(0,0,0,0.05);
+}
+.countdown-clean .unit div {
+  font-family: 'Patrician', serif;
+  font-size: 2.2rem;
+  line-height: 1;
+}
+.countdown-clean .unit label {
+  font-size: 0.9rem;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  display: block;
+  margin-top: 8px;
+}
+
+/* --- СЕКЦИЯ С ТЕКСТОМ --- */
+.custom-text {
+  max-width: 700px;
+  margin: 60px auto;
+  font-size: 1.15rem;
+  line-height: 1.8;
+  font-style: italic;
+}
+.custom-text h2 {
+  font-family: 'Patrician', serif;
+  font-size: 2.2rem;
+  margin: 40px 0 20px;
+  border-bottom: 1px solid #e8d0d3;
+  padding-bottom: 10px;
+  font-style: normal;
+}
+
+/* --- ИНФОРМАЦИЯ И КАРТА --- */
+.info {
+  /* Эффект матового стекла */
+  background: rgba(249, 249, 249, 0.85);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+
+  border: 1px solid rgba(230, 230, 230, 0.6);
+  padding: 25px;
+  border-radius: 15px;
+  margin: 40px 0;
+  font-size: 1.1rem;
+  box-shadow: 0 3px 15px rgba(0,0,0,0.06);
+}
+.info p {
+  margin: 12px 0;
+}
+/* Остальные стили для карта без изменений */
+.map-container {
+  border-radius: 12px;
+  overflow: hidden;
+  margin: 30px 0;
+  box-shadow: 0 3px 10px rgba(0,0,0,0.1);
+}
+iframe {
+  width: 100%;
+  height: 400px;
+  border: none;
+  display: block;
+}
+
+/* --- ДРЕСС-КОД --- */
+.dress-code-exact {
+  /* Эффект матового стекла */
+  background: rgba(249, 249, 249, 0.85);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+
+  border: 1px solid rgba(230, 230, 230, 0.6);
+  padding: 35px 25px;
+  border-radius: 15px;
+  margin: 40px 0;
+  box-shadow: 0 3px 15px rgba(0,0,0,0.06);
+}
+.dress-code-exact h2 {
+  font-family: 'Patrician', serif;
+  font-size: 2.2rem;
+  letter-spacing: 2px;
+  margin-bottom: 20px;
+}
+/* Остальные стили внутри блока дресс-кода без изменений */
+.dress-text p {
+  font-size: 1.2rem;
+  line-height: 1.6;
+  margin: 12px 0;
+}
+.dress-columns-container {
+  display: flex;
+  flex-direction: column;
+  gap: 30px;
+  margin-top: 30px;
+}
+.dress-column h3 {
+  font-family: 'Patrician', serif;
+  font-size: 1.6rem;
+  margin-bottom: 15px;
+  letter-spacing: 1px;
+}
+.dress-description p {
+  font-size: 1.15rem;
+  line-height: 1.5;
+  margin: 10px 0;
+}
+.group-photo img {
+  width: 100%;
+  border-radius: 10px;
+}
+/* --- ФОРМА RSVP --- */
+#rsvp-form {
+  /* Эффект матового стекла */
+  background: rgba(253, 246, 247, 0.85);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+
+  border: 1px solid rgba(242, 228, 230, 0.5);
+  padding: 30px;
+  border-radius: 15px;
+  margin: 40px auto;
+  max-width: 700px;
+  box-shadow: 0 3px 15px rgba(0,0,0,0.06);
+}
+#rsvp-form h2 {
+  font-family: 'Patrician', serif;
+  font-size: 2rem;
+  margin-bottom: 25px;
+}
+/* Остальные стили для полей и кнопок без изменений */
+#rsvp-form label {
+  display: block;
+  margin: 15px 0 8px;
+  font-weight: bold;
+}
+#rsvp-form input,
+#rsvp-form select,
+#rsvp-form textarea {
+  width: 100%;
+  max-width: 400px;
+  padding: 12px;
+  border: 1px solid #e0c5c9;
+  border-radius: 8px;
+  font-size: 1rem;
+  background: #fff;
+  font-family: 'Playfair Display', serif;
+  margin: 0 auto;
+  display: block;
+}
+#rsvp-form button {
+  width: 100%;
+  max-width: 400px;
+  padding: 14px;
+  background: #8b0000;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  margin: 25px auto 0;
+  font-size: 1.1rem;
+  font-weight: bold;
+  transition: background 0.3s, transform 0.2s;
+}
+#rsvp-form button:hover {
+  background: #a52a2a;
+  transform: scale(1.02);
+}
+#status-message {
+  margin-top: 20px;
+  font-weight: bold;
+}
+
+/* --- МУЗЫКАЛЬНЫЙ ПЛЕЕР --- */
+.music-controls {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  background: rgba(0, 0, 0, 0.7);
+  border-radius: 50px;
+  padding: 10px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  z-index: 1000;
+  backdrop-filter: blur(5px);
+}
+#music-toggle {
+  background: none;
+  border: none;
+  color: #fff;
+  font-size: 24px;
+  cursor: pointer;
+  padding: 0 5px;
+}
+#volume-slider {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 80px;
+  height: 4px;
+  background: rgba(255, 255, 255, 0.3);
+  border-radius: 5px;
+  outline: none;
+  transition: opacity 0.2s;
+}
+#volume-slider::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 14px;
+  height: 14px;
+  background: #fff;
+  cursor: pointer;
+  border-radius: 50%;
+}
+#volume-slider::-moz-range-thumb {
+  width: 14px;
+  height: 14px;
+  background: #fff;
+  cursor: pointer;
+  border-radius: 50%;
+  border: none;
+}
+
+/* --- АДАПТИВНОСТЬ --- */
+@media (min-width: 768px) 
+{
+  #rsvp-form label, #rsvp-form h2 {
+    text-align: center;
+  }
+  .dress-columns-container {
+    flex-direction: row;
+  }
+  .dress-column {
+    flex: 1;
+  }
+}
+
+@media (max-width: 480px) {
+  .header { font-size: 2.5rem; }
+  #greeting { font-size: 1.8rem; }
+  .countdown-clean .unit div { font-size: 1.8rem; }
+  .countdown-clean .unit label { font-size: 0.7rem; }
+  .music-controls {
+    bottom: 10px;
+    right: 10px;
+  }
+  
+  /* Исправление для мобильных устройств */
+  .video-background video {
+    display: block; /* Всегда показываем видео */
+  }
+  
+  .video-background::after {
+    background: rgba(255, 255, 255, 0.8); /* Увеличиваем непрозрачность для мобильных */
+  }
+  
+  /* Убираем фоновое изображение, так как используем видео */
+  .video-background {
+    background: none;
+  }
+}
+
+/* --- НОВЫЙ ДИЗАЙН ГЛАВНОГО ЭКРАНА (ПО ИЗОБРАЖЕНИЮ) --- */
+
+.hero-section.new-design {
+  position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh; /* Занимает всю высоту видимой области */
+  padding: 20px;
+  overflow: hidden; /* Важно для скрытия частей больших чисел */
+}
+
+/* Фон затемняется больше для этого дизайна, чтобы текст выделялся */
+.video-background::after {
+  background: rgba(255, 255, 255, 0.9); /* Более светлое, почти белое затемнение */
+}
+
+.hero-content {
+  position: relative;
+  z-index: 2; /* Поверх чисел */
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+}
+
+/* Большие полупрозрачные цифры */
+.overlay-numbers {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  pointer-events: none; /* Чтобы не блокировали взаимодействие с элементами внутри .hero-content */
+  z-index: 1; /* Под текстом */
+  color: rgba(0, 0, 0, 0.1); /* Полупрозрачный черный */
+  font-family: 'Patrician', serif; /* Или любой другой декоративный шрифт */
+  line-height: 0.8; /* Уменьшаем межстрочный интервал, чтобы цифры были ближе */
+}
+
+.overlay-numbers .number-top {
+  font-size: 20vw; /* Адаптивный размер, чтобы занимал большую часть экрана */
+  margin-top: 0vh; /* Сдвигаем вверх, чтобы "05" и "25" были как на примере */
+}
+
+.overlay-numbers .number-bottom {
+  font-size: 20vw; /* Адаптивный размер */
+  margin-top: 0vh; /* Сдвигаем вверх, чтобы "05" и "25" были как на примере */
+}
+
+
+/* Новые стили для имён (рукописный шрифт) */
+.new-names {
+  margin-bottom: 20px;
+}
+
+/* Подключаем шрифт Aquarele */
+@font-face {
+  font-family: 'Aquarele';
+  src: url('fonts/Aquarelle.ttf') format('truetype');
+  font-weight: normal;
+  font-style: normal;
+  font-display: swap;
+}
+
+.name-script {
+  font-family: 'Aquarelle', cursive; /* Новый шрифт с fallback на cursive */
+  font-size: 8vw;
+  color: #000000;
+  line-height: 0.9;
+  display: block;
+}
+
+.name-script.name-groom {
+  margin-bottom: -15px; /* Приподнимаем, чтобы перекрывались */
+}
+
+.name-script.name-bride {
+  margin-top: -15px; /* Приподнимаем, чтобы перекрывались */
+}
+
+/* Стиль для нижнего текста */
+.new-bottom-text p {
+  font-family: 'Playfair Display', serif;
+  font-size: 1.5rem;
+  color: #000000;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  margin-top: 50px; /* Отступ от имен */
+}
+
+/* Адаптивность для нового дизайна */
+@media (min-width: 768px) {
+  .overlay-numbers .number-top,
+  .overlay-numbers .number-bottom {
+    font-size: 15rem; /* Фиксированный большой размер на десктопе */
+  }
+
+  .name-script {
+    font-size: 7rem; /* Фиксированный размер для имен на десктопе */
+  }
+}
+
+@media (max-width: 480px) {
+  .overlay-numbers .number-top,
+  .overlay-numbers .number-bottom {
+    font-size: 30vw; /* Увеличиваем на мобильных, если 20vw мало */
+  }
+  .name-script {
+    font-size: 12vw; /* Увеличиваем на мобильных, если 8vw мало */
+  }
+  .new-bottom-text p {
+    font-size: 1.2rem;
+  }
+}
