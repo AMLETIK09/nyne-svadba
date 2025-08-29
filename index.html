@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Victor & Victoria's family</title>
+  <title>Arutun & Nune Family</title>
   
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -86,11 +86,6 @@
 Будем рады разделить с Вами праздник<br>
 долгожданный день свадьбы.
       </p>
-
-      <h2>Примечание</h2>
-      <p>
-        Будем благодарны, если вы воздержитесь от криков «Горько» на празднике, ведь поцелуй — это знак выражения чувств, он не может быть по заказу.
-      </p>
     </section>
 
     <!-- Информация о событии -->
@@ -172,8 +167,19 @@
       <p id="status-message"></p>
     </form>
   </main>
+
+    <!-- Элементы для музыки -->
+  <audio id="background-music" loop>
+    <source src="romantic.mp3" type="audio/mpeg">
+  </audio>
+
+  <div class="music-controls">
+    <button id="music-toggle">♪</button>
+    <input type="range" id="volume-slider" min="0" max="1" step="0.05" value="0.5">
+  </div>
   
 
   <script src="script.js"></script>
 </body>
 </html>
+
